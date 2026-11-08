@@ -1,0 +1,11 @@
+{% extends 'core/base.html' %}
+{% block title %}{{ item.title }} · УКЦ «Карьера»{% endblock %}
+
+{% block content %}
+<a class="back" href="{% url 'news_list' %}">&#8592; Все новости</a>
+<article class="news-detail">
+  <h1>{{ item.title }}</h1>
+  <span class="date">{{ item.created_at|date:"d.m.Y" }}</span>
+  <div class="description">{{ item.text|linebreaks }}</div>
+</article>
+{% endblock %}

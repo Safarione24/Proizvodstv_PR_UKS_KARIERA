@@ -1,0 +1,28 @@
+{% extends 'core/base.html' %}
+{% block title %}{{ profession.name }} · УКЦ «Карьера»{% endblock %}
+
+{% block content %}
+<a class="back" href="{% url 'professions' %}">&#8592; Все профессии</a>
+<h1>{{ profession.name }}</h1>
+<p><span class="badge badge-{{ profession.category.order }}">{{ profession.category.name }}</span></p>
+
+{% if profession.description %}
+<div class="description">
+  {{ profession.description|linebreaks }}
+</div>
+{% endif %}
+
+<h2>Открытые наборы</h2>
+{% if groups %}
+<ul class="group-list">
+  {% for g in groups %}
+  <li>
+    старт {{ g.start_date|date:"d.m.Y" }} — экзамен {{ g.exam_date|date:"d.m.Y" }}
+    {% if g.note %}<span class="note">{{ g.note }}</span>{% endif %}
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p class="empty">Активного набора по этой профессии нет.</p>
+{% endif %}
+{% endblock %}

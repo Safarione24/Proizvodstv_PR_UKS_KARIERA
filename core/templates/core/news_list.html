@@ -1,0 +1,19 @@
+{% extends 'core/base.html' %}
+{% block title %}Новости · УКЦ «Карьера»{% endblock %}
+
+{% block content %}
+<h1>Новости</h1>
+{% if news %}
+<div class="cards">
+  {% for n in news %}
+  <a class="card" href="{% url 'news_detail' n.slug %}">
+    <h3>{{ n.title }}</h3>
+    <p>{{ n.text|truncatewords:25 }}</p>
+    <span class="date">{{ n.created_at|date:"d.m.Y" }}</span>
+  </a>
+  {% endfor %}
+</div>
+{% else %}
+<p class="empty">Пока нет опубликованных новостей.</p>
+{% endif %}
+{% endblock %}

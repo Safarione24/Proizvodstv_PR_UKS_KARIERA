@@ -1,0 +1,55 @@
+{% extends 'core/base.html' %}
+{% block title %}Набор в группы · УКЦ «Карьера»{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <h1>Набор в группы</h1>
+  <p>Учебно-курсовой центр «Карьера» — новая подготовка и повышение квалификации
+     по рабочим профессиям нефтегазовой отрасли.</p>
+</section>
+
+{% if by_date %}
+  {% for start_date, groups in by_date %}
+  <section class="group-block">
+    <h2>С {{ start_date|date:"d.m.Y" }} открываются группы:</h2>
+    <ul class="group-list">
+      {% for g in groups %}
+      <li>
+        <span class="badge badge-{{ g.category.order }}">{{ g.category.name }}</span>
+        <a href="{% url 'profession_detail' g.profession.slug %}">{{ g.profession.name }}</a>
+        <span class="exam">экзамен {{ g.exam_date|date:"d.m.Y" }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endfor %}
+{% else %}
+  <p class="empty">Сейчас активный набор не проводится — загляните позже.</p>
+{% endif %}
+
+<section class="docs">
+  <h2>Для зачисления необходимы документы</h2>
+  <ul>
+    <li>СНИЛС;</li>
+    <li>диплом об образовании (только для индивидуальной формы обучения);</li>
+    <li>удостоверение и свидетельство по профессии/курсам (для повышения квалификации без присвоения разряда);</li>
+    <li>фото размером 3х4 — 2 шт.;</li>
+    <li>USB флеш-накопитель.</li>
+  </ul>
+</section>
+
+{% if latest_news %}
+<section>
+  <h2>Новости центра</h2>
+  <div class="cards">
+    {% for n in latest_news %}
+    <a class="card" href="{% url 'news_detail' n.slug %}">
+      <h3>{{ n.title }}</h3>
+      <p>{{ n.text|truncatewords:20 }}</p>
+      <span class="date">{{ n.created_at|date:"d.m.Y" }}</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}
