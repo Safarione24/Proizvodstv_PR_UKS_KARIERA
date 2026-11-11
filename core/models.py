@@ -78,3 +78,74 @@ class News(models.Model):
 
     def get_absolute_url(self):
         return reverse('news_detail', kwargs={'slug': self.slug})
+
+
+# --- НОВЫЕ МОДЕЛИ ---
+
+class Application(models.Model):
+    """Заявка на обучение"""
+    STATUS_CHOICES = [
+        ('new', 'Новая'),
+        ('processed', 'Обработана'),
+        ('rejected', 'Отклонена'),
+    ]
+    name = models.CharField('Имя', max_length=200)
+    phone = models.CharField('Телефон', max_length=50)
+    profession = models.ForeignKey(Profession, on_delete=models.SET_NULL,
+                                   null=True, blank=True, verbose_name='Профессия')
+    comment = models.TextField('Комментарий', blank=True)
+    status = models.CharField('Статус', max_length=20, choices=STATUS_CHOICES, default='new')
+    created_at = models.DateTimeField('Дата заявки', auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Заявка'
+        verbose_name_plural = 'Заявки'
+
+    def __str__(self):
+        return f'{self.name} — {self.phone}'
+
+
+class Photo(models.Model):
+    """Фото галереи (пока заглушки)"""
+    title = models.CharField('Подпись', max_length=200, blank=True)
+    image = models.ImageField('Изображение', upload_to='gallery/')
+    order = models.PositiveSmallIntegerField('Порядок', default=0)
+    published = models.BooleanField('Опубликовано', default=True)
+
+    class Meta:
+        ordering = ['order', 'id']
+        verbose_name = 'Фото галереи'
+        verbose_name_plural = 'Галерея'
+
+
+class Review(models.Model):
+    """Отзыв выпускника"""
+    name = models.CharField('Имя', max_length=200)
+    profession = models.ForeignKey(Profession, on_delete=models.SET_NULL,
+                                   null=True, blank=True, verbose_name='Профессия')
+    text = models.TextField('Текст отзыва')
+    rating = models.PositiveSmallIntegerField('Оценка (1-5)', default=5)
+    published = models.BooleanField('Опубликовано', default=True)
+    created_at = models.DateTimeField('Дата', auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
+
+
+class FAQ(models.Model):
+    """Частые вопросы"""
+    question = models.CharField('Вопрос', max_length=500)
+    answer = models.TextField('Ответ')
+    order = models.PositiveSmallIntegerField('Порядок', default=0)
+    published = models.BooleanField('Опубликовано', default=True)
+
+    class Meta:
+        ordering = ['order', 'id']
+        verbose_name = 'FAQ'
+        verbose_name_plural = 'FAQ'
+
+    def __str__(self):
+        return self.question

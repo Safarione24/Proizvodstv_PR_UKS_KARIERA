@@ -1,209 +1,216 @@
-:root {
-  --bg: #f4f6f9;
-  --panel: #ffffff;
-  --ink: #1c2733;
-  --muted: #5c6b7a;
-  --brand: #0f4c81;
-  --brand-dark: #0b3a63;
-  --accent: #e8a13a;
-  --line: #dfe6ee;
-  --radius: 12px;
+/* ================= ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ================= */
+
+/* Сообщения */
+.messages { margin-bottom: 20px; }
+.alert {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-size: .95rem;
+}
+.alert-success { background: #e6f7ec; color: #1d7a43; border: 1px solid #b7e4c7; }
+.alert-error { background: #fdecea; color: #c0392b; border: 1px solid #f5c6cb; }
+
+/* Имя пользователя в шапке */
+.user-name {
+  color: rgba(255,255,255,.85);
+  font-size: .9rem;
+  margin-right: 4px;
 }
 
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  font-family: "Segoe UI", Roboto, Arial, sans-serif;
-  background: var(--bg);
+/* Фильтры и поиск */
+.filters {
+  margin: 20px 0 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: var(--panel);
+  border: 1px solid var(--line);
   color: var(--ink);
+  text-decoration: none;
+  font-size: .9rem;
+  transition: all .15s ease;
+}
+.chip:hover { border-color: var(--brand); color: var(--brand); }
+.chip.active {
+  background: var(--brand);
+  color: #fff;
+  border-color: var(--brand);
+}
+
+/* Скоро экзамен */
+.soon-exam {
+  background: #fff8e1;
+  border: 1px solid #ffe082;
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  margin-top: 20px;
+}
+.soon-exam h2 { margin: 0 0 10px; font-size: 1.1rem; color: #b26a00; }
+.soon-list { list-style: none; margin: 0; padding: 0; }
+.soon-list li {
+  padding: 6px 0;
+  border-bottom: 1px dashed #ffe082;
+  font-size: .95rem;
+}
+.soon-list li:last-child { border-bottom: none; }
+.soon-list a { color: var(--brand-dark); font-weight: 600; text-decoration: none; }
+.soon-list a:hover { text-decoration: underline; }
+.exam-date { color: var(--muted); margin-left: 6px; }
+
+/* Карточки групп (кликабельны целиком) */
+.group-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+.group-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: box-shadow .15s ease, transform .15s ease, border-color .15s ease;
+}
+.group-card:hover {
+  box-shadow: 0 6px 18px rgba(15, 76, 129, .12);
+  transform: translateY(-2px);
+  border-color: var(--brand);
+}
+.group-card-title {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--brand-dark);
+  line-height: 1.3;
+}
+.group-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: .85rem;
+  color: var(--muted);
+  margin-top: auto;
+}
+
+/* Галерея */
+.gallery-section { margin-top: 30px; }
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}
+.gallery-item {
+  aspect-ratio: 4 / 3;
+  background: #e8eef5;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Отзывы */
+.reviews-section { margin-top: 30px; }
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+.review-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.review-rating { color: var(--accent); font-size: 1rem; letter-spacing: 1px; }
+.review-prof { font-size: .85rem; color: var(--muted); }
+.review-text { margin: 4px 0 0; font-size: .93rem; color: var(--ink); }
+
+/* FAQ */
+.faq-section { margin-top: 30px; }
+.faq-list { display: flex; flex-direction: column; gap: 8px; }
+.faq-item {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0 18px;
+  overflow: hidden;
+}
+.faq-question {
+  cursor: pointer;
+  padding: 14px 0;
+  font-weight: 600;
+  color: var(--brand-dark);
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.faq-question::-webkit-details-marker { display: none; }
+.faq-question::after {
+  content: "+";
+  font-size: 1.3rem;
+  color: var(--brand);
+  transition: transform .2s ease;
+}
+.faq-item[open] .faq-question::after { content: "−"; }
+.faq-answer {
+  padding: 0 0 16px;
+  color: var(--muted);
+  font-size: .95rem;
   line-height: 1.55;
 }
 
-.container { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
-
-/* Шапка */
-.site-header {
-  background: linear-gradient(90deg, var(--brand-dark), var(--brand));
-  color: #fff;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-.header-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding: 14px 20px;
-}
-.logo {
-  color: #fff;
-  text-decoration: none;
-  font-size: 1.3rem;
-  font-weight: 700;
-  letter-spacing: .5px;
-}
-.logo span { color: var(--accent); }
-.nav { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
-.nav a { color: #fff; text-decoration: none; font-size: .98rem; }
-.nav a:hover { text-decoration: underline; }
-
-/* Кнопки */
-.btn {
-  display: inline-block;
-  background: var(--accent);
-  color: var(--brand-dark);
-  border: none;
-  border-radius: 8px;
-  padding: 10px 18px;
-  font-size: .95rem;
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: none;
-}
-.btn:hover { filter: brightness(1.08); }
-.btn-small { padding: 6px 14px; font-size: .88rem; }
-.btn-ghost {
-  background: transparent;
-  border: 1px solid rgba(255,255,255,.6);
-  color: #fff;
-}
-
-/* Контент */
-main.container { padding: 28px 20px 48px; }
-
-h1 { font-size: 1.8rem; margin: 0 0 14px; }
-h2 { font-size: 1.25rem; margin: 30px 0 12px; color: var(--brand-dark); }
-
-.hero {
-  background: var(--panel);
-  border-radius: var(--radius);
-  padding: 24px 26px;
-  border: 1px solid var(--line);
-}
-.hero h1 { color: var(--brand-dark); }
-.hero p { margin: 0; color: var(--muted); max-width: 720px; }
-
-/* Блоки групп */
-.group-block {
+/* Форма заявки */
+.application-form {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: 18px 22px;
-  margin-top: 18px;
+  padding: 22px 26px;
+  margin-top: 20px;
 }
-.group-block h2 { margin-top: 0; font-size: 1.1rem; }
-.group-list { list-style: none; margin: 0; padding: 0; }
-.group-list li {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding: 9px 0;
-  border-bottom: 1px dashed var(--line);
-}
-.group-list li:last-child { border-bottom: none; }
-.group-list a { color: var(--brand); font-weight: 600; text-decoration: none; }
-.group-list a:hover { text-decoration: underline; }
-.exam { color: var(--muted); font-size: .92rem; }
-.note { color: var(--muted); font-size: .88rem; }
-
-/* Бейджи категорий */
-.badge {
-  display: inline-block;
-  font-size: .75rem;
-  font-weight: 700;
-  border-radius: 20px;
-  padding: 3px 10px;
-  white-space: nowrap;
-}
-.badge-0 { background: #e3f0ff; color: #0f4c81; }
-.badge-1 { background: #e6f7ec; color: #1d7a43; }
-.badge-2 { background: #fff3e0; color: #a86a00; }
-.badge-3 { background: #f0e9ff; color: #6a3fb5; }
-
-/* Карточки */
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
-}
-.card {
+.application-form h2 { margin-top: 0; }
+.form-row { margin-bottom: 14px; }
+.form-row label {
   display: block;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 18px 20px;
-  text-decoration: none;
-  color: var(--ink);
-  transition: box-shadow .15s ease, transform .15s ease;
+  font-weight: 600;
+  font-size: .92rem;
+  margin-bottom: 4px;
 }
-.card:hover { box-shadow: 0 6px 18px rgba(15, 76, 129, .12); transform: translateY(-2px); }
-.card h3 { margin: 10px 0 8px; font-size: 1.02rem; color: var(--brand-dark); }
-.card p { margin: 0 0 10px; color: var(--muted); font-size: .93rem; }
-.date { color: var(--muted); font-size: .85rem; }
-
-/* Документы, описание, новость */
-.docs {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 20px 26px;
-  margin-top: 26px;
-}
-.docs h2 { margin-top: 0; }
-.docs ul { margin: 0; padding-left: 20px; }
-
-.description { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 22px; }
-.news-detail .date { display: inline-block; margin-bottom: 14px; }
-
-/* Поиск */
-.search { display: flex; gap: 10px; margin: 8px 0 22px; flex-wrap: wrap; }
-.search input {
-  flex: 1;
-  min-width: 220px;
-  padding: 10px 14px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  font-size: .95rem;
-}
-
-/* Прочее */
-.back { display: inline-block; margin-bottom: 14px; color: var(--brand); text-decoration: none; }
-.empty { color: var(--muted); font-style: italic; }
-
-.login-box {
-  max-width: 400px;
-  margin: 40px auto;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 26px 28px;
-}
-.login-box label { display: block; margin: 14px 0 6px; font-weight: 600; font-size: .92rem; }
-.login-box input[type="text"], .login-box input[type="password"] {
+.form-row input, .form-row textarea {
   width: 100%;
   padding: 10px 12px;
   border: 1px solid var(--line);
   border-radius: 8px;
   font-size: .95rem;
-  margin-top: 4px;
+  font-family: inherit;
+  box-sizing: border-box;
 }
-.login-box .btn { margin-top: 18px; width: 100%; }
-.error { color: #c0392b; font-size: .9rem; }
-
-/* Подвал */
-.site-footer {
-  margin-top: 20px;
-  background: var(--brand-dark);
-  color: rgba(255,255,255,.75);
-  padding: 18px 0;
-  font-size: .88rem;
-}
-
-@media (max-width: 640px) {
-  .header-inner { justify-content: center; text-align: center; }
-  .nav { justify-content: center; }
-}
+.form-row textarea { resize: vertical; }

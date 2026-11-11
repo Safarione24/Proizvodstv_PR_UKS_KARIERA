@@ -25,4 +25,27 @@
 {% else %}
 <p class="empty">Активного набора по этой профессии нет.</p>
 {% endif %}
+
+<hr style="margin: 30px 0; border: 0; border-top: 1px solid var(--line);">
+
+<!-- Форма заявки -->
+<section class="application-form">
+  <h2>Записаться на обучение</h2>
+  <form method="post" action="">
+    {% csrf_token %}
+    <div class="form-row">
+      <label>Ваше имя</label>
+      <input type="text" name="name" required>
+    </div>
+    <div class="form-row">
+      <label>Телефон</label>
+      <input type="tel" name="phone" required>
+    </div>
+    <div class="form-row">
+      <label>Комментарий (необязательно)</label>
+      <textarea name="comment" rows="3"></textarea>
+    </div>
+    <button class="btn" type="submit">Отправить заявку</button>
+  </form>
+</section>
 {% endblock %}

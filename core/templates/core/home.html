@@ -8,36 +8,113 @@
      по рабочим профессиям нефтегазовой отрасли.</p>
 </section>
 
+<!-- Фильтры и поиск -->
+<div class="filters">
+  <div class="chips">
+    <a href="{% url 'home' %}" class="chip {% if not selected_category %}active{% endif %}">Все</a>
+    {% for cat in categories %}
+      <a href="?category={{ cat.slug }}{% if q %}&q={{ q }}{% endif %}" 
+         class="chip {% if selected_category == cat.slug %}active{% endif %}">
+        {{ cat.name }}
+      </a>
+    {% endfor %}
+  </div>
+  <form class="search" method="get" action="{% url 'home' %}">
+    {% if selected_category %}<input type="hidden" name="category" value="{{ selected_category }}">{% endif %}
+    <input type="text" name="q" value="{{ q }}" placeholder="Поиск по названию профессии...">
+    <button class="btn" type="submit">Найти</button>
+  </form>
+</div>
+
+<!-- Скоро экзамен -->
+{% if soon_exam %}
+<section class="soon-exam">
+  <h2>🔥 Скоро экзамен</h2>
+  <ul class="soon-list">
+    {% for g in soon_exam %}
+    <li>
+      <a href="{% url 'profession_detail' g.profession.slug %}">{{ g.profession.name }}</a>
+      <span class="exam-date">— {{ g.exam_date|date:"d.m.Y" }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+<!-- Список групп -->
 {% if by_date %}
   {% for start_date, groups in by_date %}
   <section class="group-block">
     <h2>С {{ start_date|date:"d.m.Y" }} открываются группы:</h2>
-    <ul class="group-list">
+    <div class="group-cards">
       {% for g in groups %}
-      <li>
-        <span class="badge badge-{{ g.category.order }}">{{ g.category.name }}</span>
-        <a href="{% url 'profession_detail' g.profession.slug %}">{{ g.profession.name }}</a>
-        <span class="exam">экзамен {{ g.exam_date|date:"d.m.Y" }}</span>
-      </li>
+      <a href="{% url 'profession_detail' g.profession.slug %}" class="group-card">
+        <div class="group-card-header">
+          <span class="badge badge-{{ g.category.order }}">{{ g.category.name }}</span>
+        </div>
+        <h3 class="group-card-title">{{ g.profession.name }}</h3>
+        <div class="group-card-footer">
+          <span>Экзамен: {{ g.exam_date|date:"d.m.Y" }}</span>
+          {% if g.note %}<span class="note">{{ g.note }}</span>{% endif %}
+        </div>
+      </a>
       {% endfor %}
-    </ul>
+    </div>
   </section>
   {% endfor %}
 {% else %}
   <p class="empty">Сейчас активный набор не проводится — загляните позже.</p>
 {% endif %}
 
-<section class="docs">
-  <h2>Для зачисления необходимы документы</h2>
-  <ul>
-    <li>СНИЛС;</li>
-    <li>диплом об образовании (только для индивидуальной формы обучения);</li>
-    <li>удостоверение и свидетельство по профессии/курсам (для повышения квалификации без присвоения разряда);</li>
-    <li>фото размером 3х4 — 2 шт.;</li>
-    <li>USB флеш-накопитель.</li>
-  </ul>
+<!-- Галерея -->
+{% if photos %}
+<section class="gallery-section">
+  <h2>Фотогалерея</h2>
+  <div class="gallery">
+    {% for p in photos %}
+    <div class="gallery-item">
+      <img src="{{ p.image.url }}" alt="{{ p.title|default:'Фото' }}">
+    </div>
+    {% endfor %}
+  </div>
 </section>
+{% endif %}
 
+<!-- Отзывы -->
+{% if reviews %}
+<section class="reviews-section">
+  <h2>Отзывы наших выпускников</h2>
+  <div class="reviews-grid">
+    {% for r in reviews %}
+    <div class="review-card">
+      <div class="review-header">
+        <strong>{{ r.name }}</strong>
+        <span class="review-rating">{% for i in "12345"|make_list %}{% if forloop.counter <= r.rating %}★{% else %}☆{% endif %}{% endfor %}</span>
+      </div>
+      {% if r.profession %}<div class="review-prof">{{ r.profession.name }}</div>{% endif %}
+      <p class="review-text">{{ r.text|truncatewords:30 }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<!-- FAQ -->
+{% if faqs %}
+<section class="faq-section">
+  <h2>Часто задаваемые вопросы</h2>
+  <div class="faq-list">
+    {% for f in faqs %}
+    <details class="faq-item">
+      <summary class="faq-question">{{ f.question }}</summary>
+      <div class="faq-answer">{{ f.answer|linebreaks }}</div>
+    </details>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<!-- Новости -->
 {% if latest_news %}
 <section>
   <h2>Новости центра</h2>
@@ -52,4 +129,5 @@
   </div>
 </section>
 {% endif %}
+
 {% endblock %}
