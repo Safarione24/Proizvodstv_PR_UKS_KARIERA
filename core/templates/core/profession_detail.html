@@ -1,51 +1,97 @@
-{% extends 'core/base.html' %}
-{% block title %}{{ profession.name }} · УКЦ «Карьера»{% endblock %}
+{% extends "core/base.html" %}
+{% load static %}
 
-{% block content %}
-<a class="back" href="{% url 'professions' %}">&#8592; Все профессии</a>
-<h1>{{ profession.name }}</h1>
-<p><span class="badge badge-{{ profession.category.order }}">{{ profession.category.name }}</span></p>
+{% block title %}{{ profession.name }} — УКЦ Карьера{% endblock %}
 
-{% if profession.description %}
-<div class="description">
-  {{ profession.description|linebreaks }}
-</div>
-{% endif %}
+{% block hero_padding %}pb-14{% endblock %}
 
-<h2>Открытые наборы</h2>
-{% if groups %}
-<ul class="group-list">
-  {% for g in groups %}
-  <li>
-    старт {{ g.start_date|date:"d.m.Y" }} — экзамен {{ g.exam_date|date:"d.m.Y" }}
-    {% if g.note %}<span class="note">{{ g.note }}</span>{% endif %}
-  </li>
-  {% endfor %}
-</ul>
-{% else %}
-<p class="empty">Активного набора по этой профессии нет.</p>
-{% endif %}
+{% block hero_content %}
+<a href="{% url 'professions' %}" class="inline-flex items-center gap-2 text-white/60 hover:text-white transition mb-4 text-sm font-medium">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+    Все профессии
+</a>
+<h1 class="text-3xl sm:text-5xl font-bold mb-3">{{ profession.name }}</h1>
+<p class="text-white/75 text-base max-w-2xl">
+    <span class="badge-pill badge-mauve">{{ profession.category.name }}</span>
+</p>
+{% endblock %}
 
-<hr style="margin: 30px 0; border: 0; border-top: 1px solid var(--line);">
+{% block main_content %}
+<main class="py-14">
+    <div class="max-w-[1180px] mx-auto px-5">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Левая колонка: Информация -->
+            <div class="lg:col-span-7 direction-column p-8 sm:p-10">
+                <h2 class="text-2xl font-bold text-[#181924] mb-6">Информация о программе</h2>
+                
+                <div class="space-y-4 text-[15.5px] text-gray-700 leading-relaxed mb-8">
+                    {% if profession.description %}
+                    {{ profession.description|linebreaks }}
+                    {% else %}
+                    <p>Программа профессионального обучения по профессии «{{ profession.name }}» разработана в соответствии с требованиями профессиональных стандартов и квалификационных требований.</p>
+                    {% endif %}
+                </div>
 
-<!-- Форма заявки -->
-<section class="application-form">
-  <h2>Записаться на обучение</h2>
-  <form method="post" action="">
-    {% csrf_token %}
-    <div class="form-row">
-      <label>Ваше имя</label>
-      <input type="text" name="name" required>
+                <h3 class="text-xl font-bold text-[#181924] mb-4">Открытые наборы</h3>
+                {% if groups %}
+                <div class="space-y-3">
+                    {% for group in groups %}
+                    <div class="course-subcard p-4 flex justify-between items-center gap-4">
+                        <div>
+                            <span class="text-sm font-semibold block">Старт: {{ group.start_date|date:"d.m.Y" }}</span>
+                            {% if group.note %}
+                            <span class="text-xs text-gray-500">{{ group.note }}</span>
+                            {% endif %}
+                        </div>
+                        <span class="badge-pill badge-mauve shrink-0">Экзамен {{ group.exam_date|date:"d.m.Y" }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="p-4 bg-gray-50 rounded-xl text-gray-500 text-sm">
+                    Активного набора по этой профессии сейчас нет.
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Правая колонка: Форма заявки -->
+            <div class="lg:col-span-5 bg-white p-8 sm:p-10 rounded-[28px] border border-gray-200/70 shadow-[0_15px_40px_-10px_rgba(22,24,38,0.05)]">
+                <h2 class="text-2xl font-bold text-[#181924] mb-2">Записаться на обучение</h2>
+                <p class="text-sm text-gray-500 mb-8">Оставьте заявку, и мы свяжемся с вами для уточнения деталей.</p>
+                
+                {% if messages %}
+                {% for message in messages %}
+                <div class="mb-4 p-4 rounded-xl {% if message.tags == 'success' %}bg-green-50 text-green-800{% else %}bg-red-50 text-red-800{% endif %} text-sm">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+
+                <form method="post" action="" class="space-y-5">
+                    {% csrf_token %}
+                    <div>
+                        <label class="block text-sm font-semibold text-[#181924] mb-2">Ваше имя *</label>
+                        <input type="text" name="name" required class="block w-full rounded-xl border border-gray-200 bg-[#f9fafb] px-4 py-3.5 text-[15px] focus:bg-white focus:border-[#987a8e] focus:ring-1 focus:ring-[#987a8e] outline-none transition-colors" placeholder="Иванов Иван">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold text-[#181924] mb-2">Телефон *</label>
+                        <input type="tel" name="phone" required class="block w-full rounded-xl border border-gray-200 bg-[#f9fafb] px-4 py-3.5 text-[15px] focus:bg-white focus:border-[#987a8e] focus:ring-1 focus:ring-[#987a8e] outline-none transition-colors" placeholder="+7 (999) 000-00-00">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-[#181924] mb-2">Комментарий</label>
+                        <textarea name="comment" rows="3" class="block w-full rounded-xl border border-gray-200 bg-[#f9fafb] px-4 py-3.5 text-[15px] resize-y focus:bg-white focus:border-[#987a8e] focus:ring-1 focus:ring-[#987a8e] outline-none transition-colors" placeholder="Укажите удобное время для звонка или задайте вопрос..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-mauve w-full py-4 text-[15px] font-semibold mt-2">
+                        Отправить заявку
+                    </button>
+                </form>
+            </div>
+
+        </div>
     </div>
-    <div class="form-row">
-      <label>Телефон</label>
-      <input type="tel" name="phone" required>
-    </div>
-    <div class="form-row">
-      <label>Комментарий (необязательно)</label>
-      <textarea name="comment" rows="3"></textarea>
-    </div>
-    <button class="btn" type="submit">Отправить заявку</button>
-  </form>
-</section>
+</main>
 {% endblock %}

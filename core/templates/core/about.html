@@ -1,0 +1,119 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}О нас — УКЦ Карьера{% endblock %}
+
+{% block hero_padding %}pb-14{% endblock %}
+
+{% block hero_content %}
+<h1 class="text-3xl sm:text-5xl font-bold mb-3">Об учебном центре</h1>
+<p class="text-white/75 text-base max-w-2xl">
+    Частное профессиональное образовательное учреждение «Учебно-консультационный центр «Карьера». Инфраструктура и наш коллектив.
+</p>
+{% endblock %}
+
+{% block main_content %}
+<main class="py-14">
+    <div class="max-w-[1180px] mx-auto px-5 space-y-16">
+
+        <!-- Текст о центре -->
+        <div class="direction-column p-8 sm:p-10">
+            <div class="max-w-4xl space-y-6 text-[15.5px] text-gray-700 leading-relaxed">
+                <h2 class="text-2xl font-bold text-[#181924] mb-4">Наша миссия</h2>
+                <p>
+                    ЧПОУ «УКЦ «Карьера» создано в 2008 году для обеспечения организаций производственных и не производственных отраслей квалифицированными кадрами путем подготовки, переподготовки, стажировки, повышения квалификации, профессиональных знаний работников этих организаций, а также незанятого (трудоустраивающегося) населения, совершенствования их деловых качеств, подготовки их к выполнению новых трудовых функций.
+                </p>
+                <p>
+                    Наш Учебный Центр зарекомендовал себя как надежный, современный и незаменимый партнер для тех, кто не желает останавливаться на достигнутом и привык идти вперёд.
+                </p>
+                <div class="bg-[#93768a]/10 border-l-4 border-[#93768a] p-5 rounded-r-xl mt-6">
+                    <p class="text-lg font-bold text-[#181924]">Наша цель:</p>
+                    <p class="text-[15px] text-gray-700 mt-2">
+                        Основной целью ЧПОУ "УКЦ "Карьера" является осуществление образовательной деятельности. Профессиональная подготовка имеет целью ускоренное приобретение учащимися навыков, необходимых для выполнения определенной работы.
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-10 pt-8 border-t border-gray-100">
+                <div class="course-subcard p-5">
+                    <span class="text-3xl font-extrabold text-[#8c6f83] block mb-1">2008</span>
+                    <span class="text-xs text-gray-500 font-medium leading-snug block">Год основания учебного центра</span>
+                </div>
+                <div class="course-subcard p-5">
+                    <span class="text-3xl font-extrabold text-[#1c2b4b] block mb-1">66 151</span>
+                    <span class="text-xs text-gray-500 font-medium leading-snug block">Специалистов обучено за 18 лет</span>
+                </div>
+                <div class="course-subcard p-5">
+                    <span class="text-3xl font-extrabold text-[#8c6f83] block mb-1">3 класса</span>
+                    <span class="text-xs text-gray-500 font-medium leading-snug block">Оснащенных современной техникой</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Инфраструктура -->
+        <div>
+            <h2 class="text-3xl font-bold text-[#181924] mb-8">Наши учебные классы</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {% if photos %}
+                {% for photo in photos %}
+                <img src="{{ photo.image.url }}" alt="{{ photo.title }}" class="w-full h-48 object-cover rounded-xl shadow-sm border border-gray-200">
+                {% endfor %}
+                {% else %}
+                <div class="w-full h-48 bg-gray-200 rounded-xl flex items-center justify-center text-gray-400 text-sm">Фото класса 1</div>
+                <div class="w-full h-48 bg-gray-200 rounded-xl flex items-center justify-center text-gray-400 text-sm">Фото класса 2</div>
+                <div class="w-full h-48 bg-gray-200 rounded-xl flex items-center justify-center text-gray-400 text-sm">Фото класса 3</div>
+                <div class="w-full h-48 bg-gray-200 rounded-xl flex items-center justify-center text-gray-400 text-sm">Фото класса 4</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Коллектив -->
+        <div>
+            <h2 class="text-3xl font-bold text-[#181924] mb-8">Наш коллектив</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Сотрудник 1 -->
+                <div class="course-subcard p-0 overflow-hidden flex flex-col group">
+                    <div class="relative h-[320px] overflow-hidden bg-gray-100">
+                        <div class="w-full h-full bg-gradient-to-br from-[#9e788f]/30 to-[#6d5164]/30 flex items-center justify-center text-gray-400">Фото</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <h4 class="font-bold text-[#181924] text-[15px] leading-tight mb-2">Львов<br>Василий Николаевич</h4>
+                        <p class="text-[13px] text-gray-500 mt-auto">Зам. директора по учебному процессу</p>
+                    </div>
+                </div>
+                <!-- Сотрудник 2 -->
+                <div class="course-subcard p-0 overflow-hidden flex flex-col group">
+                    <div class="relative h-[320px] overflow-hidden bg-gray-100">
+                        <div class="w-full h-full bg-gradient-to-br from-[#9e788f]/30 to-[#6d5164]/30 flex items-center justify-center text-gray-400">Фото</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <h4 class="font-bold text-[#181924] text-[15px] leading-tight mb-2">Резанова<br>Гузель Равильевна</h4>
+                        <p class="text-[13px] text-gray-500 mt-auto">Инспектор по учебной части</p>
+                    </div>
+                </div>
+                <!-- Сотрудник 3 -->
+                <div class="course-subcard p-0 overflow-hidden flex flex-col group">
+                    <div class="relative h-[320px] overflow-hidden bg-gray-100">
+                        <div class="w-full h-full bg-gradient-to-br from-[#9e788f]/30 to-[#6d5164]/30 flex items-center justify-center text-gray-400">Фото</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <h4 class="font-bold text-[#181924] text-[15px] leading-tight mb-2">Надырова<br>Альфия Юсуповна</h4>
+                        <p class="text-[13px] text-gray-500 mt-auto">Мастер производственного обучения</p>
+                    </div>
+                </div>
+                <!-- Сотрудник 4 -->
+                <div class="course-subcard p-0 overflow-hidden flex flex-col group">
+                    <div class="relative h-[320px] overflow-hidden bg-gray-100">
+                        <div class="w-full h-full bg-gradient-to-br from-[#9e788f]/30 to-[#6d5164]/30 flex items-center justify-center text-gray-400">Фото</div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <h4 class="font-bold text-[#181924] text-[15px] leading-tight mb-2">Емельянычева<br>Светлана Евгеньевна</h4>
+                        <p class="text-[13px] text-gray-500 mt-auto">Мастер производственного обучения</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+{% endblock %}

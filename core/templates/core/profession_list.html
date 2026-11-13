@@ -1,25 +1,108 @@
-{% extends 'core/base.html' %}
-{% block title %}Профессии · УКЦ «Карьера»{% endblock %}
+{% extends "core/base.html" %}
+{% load static %}
 
-{% block content %}
-<h1>Профессии</h1>
+{% block title %}Обучение и прайс-листы — УКЦ Карьера{% endblock %}
 
-<form class="search" method="get" action="{% url 'professions' %}">
-  <input type="text" name="q" value="{{ q }}" placeholder="Поиск по названию профессии...">
-  <button class="btn" type="submit">Найти</button>
-</form>
+{% block hero_padding %}pb-14{% endblock %}
 
-{% if professions %}
-<div class="cards">
-  {% for p in professions %}
-  <a class="card" href="{% url 'profession_detail' p.slug %}">
-    <span class="badge badge-{{ p.category.order }}">{{ p.category.name }}</span>
-    <h3>{{ p.name }}</h3>
-    <p>{{ p.description|truncatewords:18 }}</p>
-  </a>
-  {% endfor %}
-</div>
-{% else %}
-<p class="empty">Ничего не найдено.</p>
-{% endif %}
+{% block hero_content %}
+<h1 class="text-3xl sm:text-5xl font-bold mb-3">Обучение и прайс-листы</h1>
+<p class="text-white/75 text-base max-w-2xl">
+    Официальные прейскуранты цен на оказание образовательных услуг ЧПОУ «УКЦ «Карьера» и перечень актуальных программ подготовки.
+</p>
+{% endblock %}
+
+{% block main_content %}
+<main class="py-14">
+    <div class="max-w-[1180px] mx-auto px-5 space-y-14">
+
+        <!-- Поиск -->
+        <div class="direction-column p-6 sm:p-8">
+            <form method="get" action="{% url 'professions' %}" class="flex flex-col sm:flex-row gap-4 max-w-2xl">
+                <input type="text" name="q" value="{{ q }}" placeholder="Поиск по названию профессии..." 
+                       class="flex-grow rounded-xl border border-gray-200 bg-white px-4 py-3 text-[15px] focus:border-[#987a8e] focus:ring-1 focus:ring-[#987a8e] outline-none transition-colors">
+                <button type="submit" class="btn-mauve px-8 py-3 text-[15px] font-medium">Найти</button>
+            </form>
+        </div>
+
+        <!-- 3 ПРАЙС-ЛИСТА -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-7">
+            <div class="direction-column p-8 flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-2xl bg-[#93768a]/20 text-[#785d70] flex items-center justify-center mb-5 font-bold">
+                        PDF
+                    </div>
+                    <h3 class="text-xl font-bold text-[#181924] mb-3 leading-snug">
+                        Охрана труда, пожарная безопасность, ГО и ЧС
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-6">
+                        Прайс-лист оказания образовательных услуг в области охраны труда, пожарной безопасности, гражданской обороны и защиты от ЧС.
+                    </p>
+                </div>
+                <a href="#" target="_blank" class="btn-mauve py-3 px-6 text-center text-sm font-semibold w-full">
+                    Скачать прайс-лист
+                </a>
+            </div>
+
+            <div class="direction-column p-8 flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-2xl bg-[#1c2b4b]/15 text-[#1c2b4b] flex items-center justify-center mb-5 font-bold">
+                        PDF
+                    </div>
+                    <h3 class="text-xl font-bold text-[#181924] mb-3 leading-snug">
+                        Подготовка и повышение квалификации рабочих кадров
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-6">
+                        Прайс-лист оказания образовательных услуг в области профессиональной подготовки, переподготовки и повышения квалификации рабочих.
+                    </p>
+                </div>
+                <a href="#" target="_blank" class="btn-mauve py-3 px-6 text-center text-sm font-semibold w-full">
+                    Скачать прайс-лист
+                </a>
+            </div>
+
+            <div class="direction-column p-8 flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-2xl bg-[#93768a]/20 text-[#785d70] flex items-center justify-center mb-5 font-bold">
+                        PDF
+                    </div>
+                    <h3 class="text-xl font-bold text-[#181924] mb-3 leading-snug">
+                        Программы дополнительного образования
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-6">
+                        Прайс-лист оказания образовательных услуг по программам дополнительного профессионального образования и целевым курсам.
+                    </p>
+                </div>
+                <a href="#" target="_blank" class="btn-mauve py-3 px-6 text-center text-sm font-semibold w-full">
+                    Скачать прайс-лист
+                </a>
+            </div>
+        </div>
+
+        <!-- ПОЛНЫЙ СПИСОК КУРСОВ -->
+        <div class="direction-column p-8 sm:p-10">
+            <h2 class="text-2xl sm:text-3xl font-bold text-[#181924] mb-6">Полный перечень открытых наборов</h2>
+            {% if professions %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {% for profession in professions %}
+                <a href="{% url 'profession_detail' profession.slug %}" class="course-subcard p-4 flex justify-between items-center gap-4 hover:border-[#987a8e] transition group">
+                    <div>
+                        <span class="text-sm font-semibold group-hover:text-[#93768a] transition block">{{ profession.name }}</span>
+                        <span class="text-[11px] text-gray-500">{{ profession.category.name }}</span>
+                    </div>
+                    {% with group=profession.groups.first %}
+                    {% if group %}
+                    <span class="badge-pill badge-mauve shrink-0">Экз. {{ group.exam_date|date:"d.m.y" }}</span>
+                    {% endif %}
+                    {% endwith %}
+                </a>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-gray-500">По вашему запросу ничего не найдено.</p>
+            {% endif %}
+        </div>
+
+    </div>
+</main>
 {% endblock %}

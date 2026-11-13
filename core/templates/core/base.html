@@ -2,47 +2,193 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}УКЦ «Карьера»{% endblock %}</title>
-  <link rel="stylesheet" href="{% static 'core/css/style.css' %}">
-</head>
-<body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="logo" href="{% url 'home' %}">УКЦ <span>«Карьера»</span></a>
-      <nav class="nav">
-        <a href="{% url 'home' %}">Набор групп</a>
-        <a href="{% url 'professions' %}">Профессии</a>
-        <a href="{% url 'documents' %}">Документы</a>
-        <a href="{% url 'news_list' %}">Новости</a>
-        {% if user.is_authenticated %}
-          <span class="user-name">👤 {{ user.username }}</span>
-          <a class="btn btn-small" href="{% url 'admin:index' %}">Админка</a>
-          <a class="btn btn-small btn-ghost" href="{% url 'logout' %}">Выйти</a>
-        {% else %}
-          <a class="btn btn-small btn-ghost" href="{% url 'login' %}">Вход для сотрудников</a>
-        {% endif %}
-      </nav>
-    </div>
-  </header>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}УКЦ Карьера{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Подключаем основной CSS -->
+    <link rel="stylesheet" href="{% static 'core/css/style.css' %}">
+    
+    <!-- Специальные стили для слабовидящих (включаются только если vision_mode = True) -->
+    {% if vision_mode %}
+    <style>
+        /* Глобальные стили: черный фон, белый текст */
+        body, .hero-wrapper, footer, .direction-column, .course-subcard, .floating-nav, .req-card {
+            background: #000000 !important;
+            background-image: none !important;
+            color: #ffffff !important;
+            border-color: #ffffff !important;
+            box-shadow: none !important;
+        }
 
-  <main class="container">
-    {% if messages %}
-      <div class="messages">
-        {% for message in messages %}
-          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-        {% endfor %}
-      </div>
+        /* Переопределяем белые фоны (форма контактов, заглушки фото и т.д.) */
+        .bg-white, .bg-gray-100, .bg-gray-200, .bg-\[\#f9fafb\], input, textarea {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+            border: 2px solid #ffffff !important;
+        }
+
+        /* Убираем все градиенты и тени */
+        * {
+            background-image: none !important;
+            box-shadow: none !important;
+            text-shadow: none !important;
+        }
+
+        /* Ссылки и кнопки: желтый цвет, жирный шрифт */
+        a, button, .btn-mauve {
+            color: #ffff00 !important;
+            background: transparent !important;
+            border: 2px solid #ffff00 !important;
+            text-decoration: underline !important;
+            font-weight: bold !important;
+        }
+
+        /* Кнопки при наведении: синий фон, белый текст */
+        a:hover, button:hover, .btn-mauve:hover {
+            background-color: #0055ff !important;
+            color: #ffffff !important;
+            border-color: #ffff00 !important;
+        }
+
+        /* Весь текст делаем белым */
+        h1, h2, h3, h4, h5, h6, p, span, div, li, label, strong {
+            color: #ffffff !important;
+        }
+
+        /* Делаем рамки у карточек и блоков */
+        .direction-column, .course-subcard, .req-card {
+            border: 2px solid #ffffff !important;
+        }
+        
+        /* Картинки и заглушки: добавляем рамку */
+        img, .bg-gray-100, .bg-gray-200 {
+            border: 2px solid #ffffff !important;
+        }
+    </style>
     {% endif %}
+</head>
+<body class="{% if vision_mode %}vision-mode-body{% endif %}">
 
-    {% block content %}{% endblock %}
-  </main>
+    <!-- ВЕРХНИЙ ТЕМНЫЙ БЛОК (ШАПКА + HERO) -->
+    <div class="hero-wrapper text-white pt-6 {% block hero_padding %}pb-20{% endblock %}">
+        
+        <!-- Декоративные техно-линии на фоне (скрываем их в режиме слабовидящих) -->
+        {% if not vision_mode %}
+        <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-25" viewBox="0 0 1440 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="600" y1="800" x2="1100" y2="100" stroke="#987a8e" stroke-width="1.5"/>
+            <line x1="480" y1="800" x2="980" y2="100" stroke="#6374ae" stroke-width="1"/>
+            <line x1="750" y1="800" x2="1350" y2="200" stroke="#987a8e" stroke-width="1"/>
+            <circle cx="715" cy="480" r="3" fill="#ffffff"/>
+            <circle cx="728" cy="480" r="2" fill="#ffffff" opacity="0.6"/>
+            <circle cx="738" cy="480" r="1.5" fill="#ffffff" opacity="0.3"/>
+        </svg>
+        {% endif %}
 
-  <footer class="site-footer">
-    <div class="container">
-      <p>Учебно-курсовой центр «Карьера» · Обучение рабочим профессиям нефтегазовой отрасли</p>
+        <div class="max-w-[1180px] mx-auto px-5 relative z-10">
+            
+            <!-- ЕДИНАЯ ПЛАВАЮЩАЯ ШАПКА -->
+            <header class="floating-nav px-6 py-3.5 flex flex-wrap items-center justify-between gap-4 mb-14">
+                <a href="{% url 'home' %}" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-full bg-[#3d425b] flex items-center justify-center border border-white/15 shadow-inner">
+                        <svg class="w-5 h-5 text-[#c7a6bc]" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 3C7.03 3 3 7.03 3 12v2h18v-2c0-4.97-4.03-9-9-9zm-1 2.07V9H9V5.58C9.64 5.31 10.31 5.14 11 5.07zM13 5.07c.69.07 1.36.24 2 .51V9h-2V5.07zM2 16v2h20v-2H2z"/>
+                        </svg>
+                    </div>
+                    <div class="leading-tight font-bold text-[15px] tracking-tight">
+                        УКЦ<br>Карьера
+                    </div>
+                </a>
+
+                <nav class="hidden md:flex items-center gap-7 text-[14px] font-medium">
+                    <a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}font-semibold border-b-2 pb-0.5{% else %}hover:opacity-80 transition{% endif %}">Главная</a>
+                    <a href="{% url 'professions' %}" class="{% if request.resolver_match.url_name == 'professions' or request.resolver_match.url_name == 'profession_detail' %}font-semibold border-b-2 pb-0.5{% else %}hover:opacity-80 transition{% endif %}">Обучение</a>
+                    <a href="{% url 'self_prep' %}" class="{% if request.resolver_match.url_name == 'self_prep' %}font-semibold border-b-2 pb-0.5{% else %}hover:opacity-80 transition{% endif %}">Самоподготовка</a>
+                    <a href="{% url 'about' %}" class="{% if request.resolver_match.url_name == 'about' %}font-semibold border-b-2 pb-0.5{% else %}hover:opacity-80 transition{% endif %}">О нас</a>
+                    <a href="{% url 'contacts' %}" class="{% if request.resolver_match.url_name == 'contacts' %}font-semibold border-b-2 pb-0.5{% else %}hover:opacity-80 transition{% endif %}">Контакты</a>
+                    
+                    <!-- Переключатель слабовидящих -->
+                    <a href="{% url 'toggle_vision' %}" class="flex items-center gap-1.5 hover:opacity-80 transition" title="Переключить версию для слабовидящих">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                        {% if vision_mode %}Обычная версия{% else %}Слабовидящим{% endif %}
+                    </a>
+                </nav>
+
+                <!-- Вход для админа (вместо заказать звонок) -->
+                <a href="/admin/" target="_blank" class="btn-mauve px-6 py-2.5 text-[14px] font-medium flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
+                    Вход для админа
+                </a>
+            </header>
+
+            {% block hero_content %}{% endblock %}
+
+        </div>
     </div>
-  </footer>
+
+    {% block main_content %}{% endblock %}
+
+    <!-- ЕДИНЫЙ ПОДВАЛ -->
+    <footer class="py-14 mt-10">
+        <div class="max-w-[1180px] mx-auto px-5">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
+                
+                <div class="md:col-span-5 space-y-4">
+                    <a href="{% url 'home' %}" class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-[#3d425b] flex items-center justify-center border border-white/15">
+                            <svg class="w-5 h-5 text-[#c7a6bc]" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 3C7.03 3 3 7.03 3 12v2h18v-2c0-4.97-4.03-9-9-9zm-1 2.07V9H9V5.58C9.64 5.31 10.31 5.14 11 5.07zM13 5.07c.69.07 1.36.24 2 .51V9h-2V5.07zM2 16v2h20v-2H2z"/>
+                            </svg>
+                        </div>
+                        <span class="font-bold text-xl tracking-tight">УКЦ Карьера</span>
+                    </a>
+                    <p class="text-xs opacity-70 max-w-sm leading-relaxed">
+                        Частное профессиональное образовательное учреждение «Учебно-консультационный центр «Карьера»
+                    </p>
+                    <div class="space-y-2.5 pt-2 text-[14px]">
+                        <div class="flex items-start gap-3">
+                            <svg class="w-5 h-5 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            <span>423452, РТ, г. Альметьевск,<br>ул. Ленина, д. 28, 3 этаж</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                            <span>8 (8553) 37-31-02, +7 917-925-90-12</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            <span>ukc.kariera@yandex.ru</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:col-span-4 space-y-3 text-[14px]">
+                    <div class="font-semibold mb-2">Разделы сайта</div>
+                    <ul class="space-y-2.5">
+                        <li><a href="{% url 'about' %}" class="hover:opacity-80 transition">Наша миссия и коллектив</a></li>
+                        <li><a href="{% url 'documents' %}" class="hover:opacity-80 transition">Лицензия и документы</a></li>
+                        <li><a href="{% url 'professions' %}" class="hover:opacity-80 transition">Обучение групп (Прайс-листы)</a></li>
+                        <li><a href="{% url 'self_prep' %}" class="hover:opacity-80 transition">Вопросы для самоподготовки</a></li>
+                        <li><a href="{% url 'contacts' %}" class="hover:opacity-80 transition">Контакты и обратная связь</a></li>
+                        <li><a href="{% url 'toggle_vision' %}" class="hover:opacity-80 transition">{% if vision_mode %}Обычная версия{% else %}Версия для слабовидящих{% endif %}</a></li>
+                    </ul>
+                </div>
+
+                <div class="md:col-span-3 flex md:justify-end gap-3">
+                    <a href="https://vk.com" target="_blank" class="w-10 h-10 rounded-full border border-current flex items-center justify-center transition" aria-label="VK">
+                        <span class="font-bold text-xs">VK</span>
+                    </a>
+                    <a href="https://t.me" target="_blank" class="w-10 h-10 rounded-full border border-current flex items-center justify-center transition" aria-label="Telegram">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2L2 12l4.5 1.5L18 7l-9 8.5V21l3.5-3.5L17 20l5-18z"/></svg>
+                    </a>
+                    <a href="https://youtube.com" target="_blank" class="w-10 h-10 rounded-full border border-current flex items-center justify-center transition" aria-label="Видео">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+
 </body>
 </html>

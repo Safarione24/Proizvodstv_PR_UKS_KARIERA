@@ -1,0 +1,156 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Версия для слабовидящих — УКЦ Карьера</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            font-size: 20px;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        a {
+            color: #ffff00;
+            text-decoration: underline;
+        }
+        a:hover, a:focus {
+            color: #ffffff;
+            background-color: #0055ff;
+            outline: 2px solid #ffff00;
+        }
+        header {
+            border-bottom: 2px solid #ffffff;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .logo {
+            font-weight: bold;
+            font-size: 24px;
+            color: #ffffff;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        h1, h2 {
+            color: #ffffff;
+            border-bottom: 1px solid #555;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        .info-block {
+            border: 2px solid #ffffff;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #111111;
+        }
+        .btn-normal {
+            display: inline-block;
+            background-color: #ffffff;
+            color: #000000;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-weight: bold;
+            border: 2px solid #ffffff;
+            margin-top: 20px;
+        }
+        .btn-normal:hover {
+            background-color: #0055ff;
+            color: #ffffff;
+            border-color: #ffff00;
+        }
+        footer {
+            border-top: 2px solid #ffffff;
+            padding: 20px;
+            text-align: center;
+            margin-top: 50px;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="{% url 'home' %}" class="logo">УКЦ «Карьера»</a>
+        <nav class="nav-links">
+            <a href="{% url 'home' %}">Главная</a>
+            <a href="{% url 'professions' %}">Обучение</a>
+            <a href="{% url 'self_prep' %}">Самоподготовка</a>
+            <a href="{% url 'about' %}">О нас</a>
+            <a href="{% url 'contacts' %}">Контакты</a>
+            <a href="{% url 'home' %}" class="btn-normal">Обычная версия</a>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Версия сайта для слабовидящих</h1>
+        <p>Вы находитесь на версии сайта с повышенным уровнем контрастности и увеличенным размером шрифта. Это соответствует требованиям доступности для людей с нарушениями зрения.</p>
+
+        <div class="info-block">
+            <h2>Наши контакты</h2>
+            <p><strong>Адрес:</strong> 423452, РТ, г. Альметьевск, ул. Ленина, д. 28, 3 этаж</p>
+            <p><strong>Телефоны:</strong> 8 (8553) 37-31-02, +7 917-925-90-12</p>
+            <p><strong>Email:</strong> <a href="mailto:ukc.kariera@yandex.ru">ukc.kariera@yandex.ru</a></p>
+        </div>
+
+        <div class="info-block">
+            <h2>Расписание ближайших групп</h2>
+            {% if by_date %}
+                <ul>
+                {% for start_date, groups in by_date %}
+                    <li>
+                        <strong>С {{ start_date|date:"d.m.Y" }}:</strong>
+                        <ul>
+                        {% for group in groups %}
+                            <li>{{ group.profession.name }} (Экзамен: {{ group.exam_date|date:"d.m.Y" }})</li>
+                        {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>На данный момент расписание обновляется.</p>
+            {% endif %}
+        </div>
+
+        <div class="info-block">
+            <h2>Документы для зачисления</h2>
+            <ul>
+                <li>СНИЛС;</li>
+                <li>Диплом об образовании (для индивидуальной формы обучения);</li>
+                <li>Удостоверение и свидетельство по профессии/курсам;</li>
+                <li>2 фото размером 3х4;</li>
+                <li>USB флеш-накопитель.</li>
+            </ul>
+        </div>
+    </main>
+
+    <footer>
+        <p>© Учебно-консультационный центр «Карьера»</p>
+        <p><a href="{% url 'home' %}">Вернуться на главную страницу</a></p>
+    </footer>
+
+</body>
+</html>

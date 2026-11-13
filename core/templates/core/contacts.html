@@ -1,0 +1,110 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Контакты — УКЦ Карьера{% endblock %}
+
+{% block hero_padding %}pb-14{% endblock %}
+
+{% block hero_content %}
+<h1 class="text-3xl sm:text-5xl font-bold mb-3">Свяжитесь с нами</h1>
+<p class="text-white/75 text-base max-w-2xl">
+    Оставьте заявку на обучение или задайте интересующие вопросы. Мы находимся в центре Альметьевска и всегда готовы помочь.
+</p>
+{% endblock %}
+
+{% block main_content %}
+<main class="py-14">
+    <div class="max-w-[1180px] mx-auto px-5">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Левая колонка: Информация -->
+            <div class="lg:col-span-5 direction-column p-8 sm:p-10 h-full">
+                <h2 class="text-2xl font-bold text-[#181924] mb-8">Наши контакты</h2>
+                
+                <div class="space-y-7">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-[#93768a]/15 text-[#785d70] flex items-center justify-center shrink-0">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        </div>
+                        <div>
+                            <p class="text-[13px] font-semibold text-gray-500 uppercase tracking-wide mb-1">Адрес</p>
+                            <p class="text-[15.5px] font-medium text-[#181924] leading-relaxed">423452, РТ, г. Альметьевск<br>ул. Ленина, д. 28, 3 этаж</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-[#1c2b4b]/10 text-[#1c2b4b] flex items-center justify-center shrink-0">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                        </div>
+                        <div>
+                            <p class="text-[13px] font-semibold text-gray-500 uppercase tracking-wide mb-1">Телефоны</p>
+                            <p class="text-[15.5px] font-medium text-[#181924]">8 (8553) 37-31-02</p>
+                            <p class="text-[15.5px] font-medium text-[#181924] mt-0.5">+7 917-925-90-12 (моб.)</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-gray-200/60 text-gray-600 flex items-center justify-center shrink-0">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        </div>
+                        <div>
+                            <p class="text-[13px] font-semibold text-gray-500 uppercase tracking-wide mb-1">Email</p>
+                            <a href="mailto:ukc.kariera@yandex.ru" class="text-[15.5px] font-medium text-[#987a8e] hover:text-[#7d6175] transition">ukc.kariera@yandex.ru</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Правая колонка: Форма -->
+            <div class="lg:col-span-7 bg-white p-8 sm:p-10 rounded-[28px] border border-gray-200/70 shadow-[0_15px_40px_-10px_rgba(22,24,38,0.05)]">
+                <h2 class="text-2xl font-bold text-[#181924] mb-2">Оставить сообщение</h2>
+                <p class="text-sm text-gray-500 mb-8">Заполните форму ниже, и наши специалисты свяжутся с вами в ближайшее время.</p>
+                
+                {% if messages %}
+                {% for message in messages %}
+                <div class="mb-4 p-4 rounded-xl {% if message.tags == 'success' %}bg-green-50 text-green-800{% else %}bg-red-50 text-red-800{% endif %} text-sm">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+
+                <form method="post" action="{% url 'contacts' %}" class="space-y-5">
+                    {% csrf_token %}
+                    <div>
+                        <label class="block text-sm font-semibold text-[#181924] mb-2">Ваше имя *</label>
+                        <input type="text" name="name" required class="block w-full rounded-xl border border-gray-200 bg-[#f9fafb] px-4 py-3.5 text-[15px] focus:bg-white focus:border-[#987a8e] focus:ring-1 focus:ring-[#987a8e] outline-none transition-colors" placeholder="Иванов Иван">
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-sm font-semibold text-[#181924] mb-2">Ваш email *</label>
+                            <input type="email" name="email" required class="block w-full rounded-xl border border-gray-200 bg-[#f9fafb] px-4 py-3.5 text-[15px] focus:bg-white focus:border-[#987a8e] focus:ring-1 focus:ring-[#987a8e] outline-none transition-colors" placeholder="example@mail.ru">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-[#181924] mb-2">Ваш телефон</label>
+                            <input type="tel" name="phone" class="block w-full rounded-xl border border-gray-200 bg-[#f9fafb] px-4 py-3.5 text-[15px] focus:bg-white focus:border-[#987a8e] focus:ring-1 focus:ring-[#987a8e] outline-none transition-colors" placeholder="+7 (999) 000-00-00">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-[#181924] mb-2">Ваше обращение *</label>
+                        <textarea name="message" rows="4" required class="block w-full rounded-xl border border-gray-200 bg-[#f9fafb] px-4 py-3.5 text-[15px] resize-y focus:bg-white focus:border-[#987a8e] focus:ring-1 focus:ring-[#987a8e] outline-none transition-colors" placeholder="Напишите ваш вопрос или укажите название курса..."></textarea>
+                    </div>
+
+                    <div class="flex items-start gap-3 py-2">
+                        <input type="checkbox" id="privacy" required class="mt-1 w-4 h-4 rounded border-gray-300 text-[#987a8e] focus:ring-[#987a8e] cursor-pointer">
+                        <label for="privacy" class="text-[13px] text-gray-500 leading-snug cursor-pointer">
+                            Я выражаю согласие на обработку персональных данных в соответствии с <a href="#" class="text-[#987a8e] hover:underline">Политикой обработки персональных данных</a>.
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-mauve w-full py-4 text-[15px] font-semibold mt-2">
+                        Отправить сообщение
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</main>
+{% endblock %}
