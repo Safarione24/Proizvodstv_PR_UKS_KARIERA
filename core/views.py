@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from .models import Category, Profession, Group, News, Application, Photo, Review, FAQ
+from .forms import ContactForm
 
 def home(request):
     today = date.today()
@@ -95,25 +96,29 @@ def about(request):
 
 def contacts(request):
     if request.method == 'POST':
-        name = request.POST.get('name', '').strip()
-        phone = request.POST.get('phone', '').strip()
-        email = request.POST.get('email', '').strip()
-        message_text = request.POST.get('message', '').strip()
-        
-        if name and email and message_text:
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            comment = f"Email: {data['email']}\n\n{data['message']}"
+            if data['phone']:
+                comment = f"Телефон: {data['phone']}\n" + comment
+
             Application.objects.create(
-                name=name,
-                phone=phone,
-                comment=f"Email: {email}\n\n{message_text}"
+                name=data['name'],
+                phone=data['phone'],
+                comment=comment,
             )
             messages.success(request, 'Спасибо! Ваше сообщение отправлено.')
             return redirect('contacts')
-        else:
-            messages.error(request, 'Заполните обязательные поля.')
-    
+        # Ошибки сами покажутся в шаблоне рядом с полями
+    else:
+        form = ContactForm()
+
     return render(request, 'core/contacts.html', {
+        'form': form,
         'vision_mode': request.session.get('vision_mode', False),
     })
+
 
 # ВКЛЮЧЕНИЕ / ВЫКЛЮЧЕНИЕ РЕЖИМА СЛАБОВИДЯЩИХ
 def toggle_vision(request):
